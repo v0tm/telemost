@@ -5,6 +5,7 @@ load_dotenv(find_dotenv())
 
 
 class Config:
+    CHATGPT_SYMBOLS_THRESHOLD = os.environ.get("CHATGPT_SYMBOLS_THRESHOLD", 8000)
     CHATGPT_TOKEN = os.environ.get("CHATGPT_TOKEN")
     DB_CONNECT_PATH = os.environ.get("DB_CONNECT_PATH")
     AUTHORIZATION_TOKEN = os.environ.get("AUTHORIZATION_TOKEN")

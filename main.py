@@ -1,4 +1,4 @@
-from modules.telegram_bot import start
+from modules.telegram_bot import TelegramBot
 
 if __name__ == '__main__':
-    start()
+    TelegramBot.start()
