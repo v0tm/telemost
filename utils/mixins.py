@@ -29,9 +29,11 @@ class BaseDBOperationsMixin:
         return instance
 
     def update(self, **kwargs):
-        #instance = self.get_or_create(id=_id)
         for key in kwargs.keys():
             setattr(self, key, kwargs.get(key))
             print(f'[{self}] New `{key}` value is: {getattr(self, key)}')
         session.add(self)
         session.commit()
+
+    def __repr__(self):
+        return f'<{self.__class__.__name__} {self.id}>'

@@ -21,9 +21,6 @@ class User(BaseDBOperationsMixin, Base):
         self.first_name = first_name
         self.last_name = last_name
 
-    def __repr__(self):
-        return f'({self.id} {self.username})'
-
 
 class Chat(BaseDBOperationsMixin, Base):
     __tablename__ = 'chats'
@@ -34,9 +31,6 @@ class Chat(BaseDBOperationsMixin, Base):
 
     def __init__(self, id):
         self.id = id
-
-    def __repr__(self):
-        return f'({self.id})'
 
 
 class Message(BaseDBOperationsMixin, Base):
@@ -56,7 +50,4 @@ class Message(BaseDBOperationsMixin, Base):
         self.user_id = user_id
         self.text = text
         self.scope = scope
-
-    def __repr__(self):
-        return f'({self.id} {self.chat_id} {self.user_id})'
 
