@@ -1,4 +1,4 @@
-from modules import session
+from modules.database import session
 
 
 class BaseDBOperationsMixin:
@@ -19,7 +19,7 @@ class BaseDBOperationsMixin:
     @classmethod
     def get_or_create(cls, **kwargs):
         if 'id' not in kwargs:
-            raise Exception(f'Cannot search for a {cls} instance without `id` field')
+            raise Exception(f'Cannot search for a {cls} instance without an `id` field')
         instance = session.query(cls).filter_by(id=kwargs.get('id')).first()
         if instance:
             return instance
@@ -36,4 +36,4 @@ class BaseDBOperationsMixin:
         session.commit()
 
     def __repr__(self):
-        return f'<{self.__class__.__name__} {self.id}>'
+        return f'<{self.__class__.__name__}: {self.__class__.__name__} object ({self.id})>'

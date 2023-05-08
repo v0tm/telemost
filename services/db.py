@@ -1,14 +1,18 @@
-from modules.db import Chat
-from modules.db import Message
-from modules.db import User
-from modules import session
-from sqlalchemy.orm.attributes import flag_modified
+from modules.models import Chat, Message, User
+from telegram import Message as TelegramMessage
 
 
 class DatabaseServices:
 
-    def add_message(self, message):
+    def add_message(self, message: TelegramMessage, scope=None) -> None:
+        """
+        Save the message in the database.
+
+        :param message: The message to save.
+        :param scope: Custom scope (for example for storing command logs).
+        :return: None
+        """
         u = message.from_user
-        chat = Chat.get_or_create(id=message.chat.id) #self.get_or_create(Chat, id=message.chat.id)
-        user = User.get_or_create(id=u.id, username=u.username, first_name=u.first_name, last_name=u.last_name) #self.get_or_create(User, **telegram_user_data)
-        Message.create(id=message.id, chat_id=chat.id, user_id=user.id, text=message.text, scope=chat.scope)
+        chat = Chat.get_or_create(id=message.chat.id, name=message.chat.title)
+        user = User.get_or_create(id=u.id, username=u.username, first_name=u.first_name, last_name=u.last_name)
+        Message.create(id=message.id, chat_id=chat.id, user_id=user.id, text=message.text, scope=scope or chat.scope)

@@ -1,10 +1,8 @@
-from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, JSON
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import ForeignKey, Column, String, Integer
 from sqlalchemy.orm import relationship
 
-from configuration import Config
 from utils.mixins import BaseDBOperationsMixin
-from modules import Base
+from modules.database import Base
 
 
 class User(BaseDBOperationsMixin, Base):
@@ -26,11 +24,13 @@ class Chat(BaseDBOperationsMixin, Base):
     __tablename__ = 'chats'
 
     id = Column("id", Integer, primary_key=True)
+    name = Column('name', String, nullable=True, default=None)
     prompt = Column('prompt', String, nullable=True, default=None)
     scope = Column('scope', String, nullable=False, default='default')
 
-    def __init__(self, id):
+    def __init__(self, id, name=None):
         self.id = id
+        self.name = name
 
 
 class Message(BaseDBOperationsMixin, Base):

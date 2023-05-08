@@ -1,8 +1,8 @@
 from configuration import Config
-from modules.db import Chat
-from modules.db import Message
-from modules.db import User
-from modules import session
+from modules.models import Chat
+from modules.models import Message
+from modules.models import User
+from modules.database import session
 import openai
 from sqlalchemy.orm import joinedload
 
@@ -32,10 +32,11 @@ class ChatGPTGenerateResponseService:
 
         for message in messages:
             role = 'assistant' if message.user_id == self.bot.id else 'user'
-            self.data.insert(1, {"role": role, "content": f'{message.user.username}: {message.text}'})
+            username = message.user.first_name or message.user.username
+            self.data.insert(1, {"role": role, "content": f'{username}: {message.text}'})
             if sum([len(m['content']) for m in self.data]) > Config.CHATGPT_SYMBOLS_THRESHOLD:
                 break
-        print(f'{self.data}')
+        # print(f'{self.data}')
         return self._request_response(self.data)
 
     def generate_response(self, task):

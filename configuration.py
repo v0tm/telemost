@@ -13,3 +13,4 @@ class Config:
     DEFAULT_CHATGPT_SYSTEM_PROMPT = os.environ.get("DEFAULT_CHATGPT_SYSTEM_PROMPT", 'none')
     TITLE_PROMPT = os.environ.get("TITLE_PROMPT", 'none')
     TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN', 'none')
+    HTML_TEMPLATE_SETTINGS_COMMAND = os.environ.get('HTML_TEMPLATE_SETTINGS_COMMAND', 'none').replace('\\n', '\n')
