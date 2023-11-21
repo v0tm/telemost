@@ -45,7 +45,7 @@ class ChatGPTGenerateResponseService:
 
     def _request_response(self, data):
         try:
-            chat = openai.ChatCompletion.create(model='gpt-3.5-turbo', messages=data, n=1)
+            chat = openai.ChatCompletion.create(model='gpt-4', messages=data, n=1)
             if chat.choices[0].finish_reason != 'stop':
                 raise Exception("This model's maximum context length is full")
             reply = chat.choices[0].message.content
