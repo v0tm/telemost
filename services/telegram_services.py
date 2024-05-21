@@ -40,7 +40,8 @@ class TelegramBotHandlerService:
             print(f'[{self.message_type}] {self.bot.username}: {response.text} [to {self.message.from_user.username}]')
             DatabaseServices().add_message(response)
         except Exception as ex:
-            await self.bot.sendMessage(chat_id=self.chat.id, text=str(ex))
+            print(ex)
+            #await self.bot.sendMessage(chat_id=self.chat.id, text=str(ex))
 
     async def set_scope(self):
         chat = Chat.get_or_create(id=self.message.chat.id, name=self.message.chat.title)
