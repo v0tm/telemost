@@ -36,7 +36,11 @@ class TelegramBotHandlerService:
                 return
             await self.chat.send_chat_action("typing")
             text = ChatGPTGenerateResponseService(self.bot, self.chat.id).generate_response_with_narrative()
-            response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text)
+            try:
+                response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text,
+                                                                   parse_mode='markdownV2')
+            except Exception as e:
+                response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text)
             print(f'[{self.message_type}] {self.bot.username}: {response.text} [to {self.message.from_user.username}]')
             DatabaseServices().add_message(response)
         except Exception as ex:
