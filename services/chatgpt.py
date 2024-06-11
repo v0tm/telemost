@@ -33,9 +33,11 @@ class ChatGPTGenerateResponseService:
         for message in messages:
             role = 'assistant' if message.user_id == self.bot.id else 'user'
             username = message.user.first_name or message.user.username
-            self.data.insert(1, {"role": role, "content": f'{username}: {message.text}'})
-            if sum([len(m['content']) for m in self.data]) > Config.CHATGPT_SYMBOLS_THRESHOLD:
+            text = f'{username}: {message.text}'
+            if sum([len(m['content']) for m in self.data]) + len(text) > Config.CHATGPT_SYMBOLS_THRESHOLD:
                 break
+            else:
+                self.data.insert(1, {"role": role, "content": text})
         # print(f'{self.data}')
         return self._request_response(self.data)
 
