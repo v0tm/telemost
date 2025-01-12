@@ -32,7 +32,7 @@ class TelegramBotHandlerService:
             mentioned = True if self.bot.name in self.text or 'хоуми' in self.text.lower() else False
             if self.message.reply_to_message and self.message.reply_to_message.from_user.id == self.bot.id:
                 mentioned = True
-            if 'group' in str(self.message_type) and chance > 1 and not mentioned:
+            if 'group' in str(self.message_type) and chance > 0.05 and not mentioned:
                 return
             await self.chat.send_chat_action("typing")
             topic = self.message.message_thread_id if self.message.is_topic_message else None
