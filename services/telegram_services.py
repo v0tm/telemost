@@ -32,15 +32,16 @@ class TelegramBotHandlerService:
             mentioned = True if self.bot.name in self.text or 'хоуми' in self.text.lower() else False
             if self.message.reply_to_message and self.message.reply_to_message.from_user.id == self.bot.id:
                 mentioned = True
-            if 'group' in str(self.message_type) and chance > 0.05 and not mentioned:
+            if 'group' in str(self.message_type) and chance > 1 and not mentioned:
                 return
             await self.chat.send_chat_action("typing")
+            topic = self.message.message_thread_id if self.message.is_topic_message else None
             text = ChatGPTGenerateResponseService(self.bot, self.chat.id).generate_response_with_narrative()
             try:
-                response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text,
+                response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text, message_thread_id=topic,
                                                                    parse_mode='markdownV2')
             except Exception as e:
-                response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text)
+                response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text, message_thread_id=topic)
             print(f'[{self.message_type}] {self.bot.username}: {response.text} [to {self.message.from_user.username}]')
             DatabaseServices().add_message(response)
         except Exception as ex:
