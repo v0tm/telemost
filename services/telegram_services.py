@@ -32,7 +32,7 @@ class TelegramBotHandlerService:
             mentioned = True if self.bot.name in self.text or 'хоуми' in self.text.lower() else False
             if self.message.reply_to_message and self.message.reply_to_message.from_user.id == self.bot.id:
                 mentioned = True
-            if self.message_type == 'group' and chance > 0.05 and not mentioned:
+            if 'group' in str(self.message_type) and chance > 0.05 and not mentioned:
                 return
             await self.chat.send_chat_action("typing")
             text = ChatGPTGenerateResponseService(self.bot, self.chat.id).generate_response_with_narrative()
