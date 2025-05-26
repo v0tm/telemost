@@ -26,7 +26,7 @@ class TelegramBotHandlerService:
         Service for handling incoming messages.
         """
         try:
-            print(f'[{self.message_type}] {self.message.from_user.username}: {self.message.text} [topic {type(self.message.message_thread_id)}]')
+            print(f'[{self.message.id}][{self.message_type}] {self.message.from_user.username}: {self.message.text} [topic {self.message.message_thread_id}]')
             DatabaseServices().add_message(self.message)
             chance = random.random()
             mentioned = True if self.bot.name in self.text or 'хоуми' in self.text.lower() else False
