@@ -30,6 +30,8 @@ class TelegramBotHandlerService:
             print(f'[message_id {self.message.id}] [chat_id {self.chat.id}] [{self.message_type}] {self.message.from_user.username}: {self.message.text} [topic {self.message.message_thread_id}]')
             DatabaseServices().add_message(self.message)
             chance = random.random()
+            if self.text is None:
+                return
             mentioned = True if self.bot.name in self.text or 'хоуми' in self.text.lower() else False
             if self.message.reply_to_message and self.message.reply_to_message.from_user.id == self.bot.id:
                 mentioned = True
