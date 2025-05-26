@@ -26,7 +26,7 @@ class TelegramBotHandlerService:
         Service for handling incoming messages.
         """
         try:
-            print(f'[{self.message_type}] {self.message.from_user.username}: {self.message.text}')
+            print(f'[{self.message_type}] {self.message.from_user.username}: {self.message.text} [topic {type(self.message.message_thread_id)}]')
             DatabaseServices().add_message(self.message)
             chance = random.random()
             mentioned = True if self.bot.name in self.text or 'хоуми' in self.text.lower() else False
@@ -36,7 +36,7 @@ class TelegramBotHandlerService:
                 return
             await self.chat.send_chat_action("typing")
             topic = self.message.message_thread_id if self.message.is_topic_message else None
-            text = ChatGPTGenerateResponseService(self.bot, self.chat.id).generate_response_with_narrative()
+            text = ChatGPTGenerateResponseService(self.bot, self.chat.id).generate_response_with_narrative(topic)
             try:
                 response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text, message_thread_id=topic,
                                                                    parse_mode='markdownV2')

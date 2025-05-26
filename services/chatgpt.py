@@ -23,10 +23,10 @@ class ChatGPTGenerateResponseService:
         if self.chat.prompt is not None:
             self.data = [{"role": "system", "content": self.chat.prompt}]
 
-    def generate_response_with_narrative(self):
+    def generate_response_with_narrative(self, topic=None):
         messages = session.query(Message).\
             join(User, Message.user_id == User.id).\
-            filter(Message.chat_id == self.chat.id, Message.scope == self.chat.scope).\
+            filter(Message.chat_id == self.chat.id, Message.scope == self.chat.scope, Message.text != '', Message.topic == topic).\
             options(joinedload(Message.user)).\
             order_by(Message.id.desc()).\
             all()

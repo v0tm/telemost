@@ -41,13 +41,15 @@ class Message(BaseDBOperationsMixin, Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     text = Column('text', String)
     scope = Column('scope', String)
+    topic = Column('topic', Integer)
 
     user = relationship("User", backref="messages")
 
-    def __init__(self, id, chat_id, user_id, text, scope=None):
+    def __init__(self, id, chat_id, user_id, text, scope=None, topic=None):
         self.id = id
         self.chat_id = chat_id
         self.user_id = user_id
         self.text = text
         self.scope = scope
+        self.topic = topic
 
