@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, Column, String, Integer
+from sqlalchemy import ForeignKey, Column, String, Integer, BigInteger, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from utils.mixins import BaseDBOperationsMixin
@@ -37,6 +37,7 @@ class Message(BaseDBOperationsMixin, Base):
     __tablename__ = 'messages'
 
     id = Column("id", Integer, primary_key=True)
+    message_id = Column("message_id", BigInteger)
     chat_id = Column(Integer, ForeignKey("chats.id"))
     user_id = Column(Integer, ForeignKey("users.id"))
     text = Column('text', String)
@@ -45,11 +46,13 @@ class Message(BaseDBOperationsMixin, Base):
 
     user = relationship("User", backref="messages")
 
-    def __init__(self, id, chat_id, user_id, text, scope=None, topic=None):
-        self.id = id
-        self.chat_id = chat_id
-        self.user_id = user_id
-        self.text = text
-        self.scope = scope
-        self.topic = topic
+    __table_args__ = tuple(UniqueConstraint('message_id', 'chat_id', name='_message_id_chat_id_uc'))
+
+    # def __init__(self, id, chat_id, user_id, text, scope=None, topic=None):
+    #     self.id = id
+    #     self.chat_id = chat_id
+    #     self.user_id = user_id
+    #     self.text = text
+    #     self.scope = scope
+    #     self.topic = topic
 
