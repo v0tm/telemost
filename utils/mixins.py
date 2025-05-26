@@ -15,6 +15,7 @@ class BaseDBOperationsMixin:
         instance = cls(**kwargs)
         session.add(instance)
         session.commit()
+        print(f'new id: {instance.id}')
 
     @classmethod
     def get_or_create(cls, **kwargs):

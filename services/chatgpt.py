@@ -1,3 +1,5 @@
+import traceback
+
 from configuration import Config
 from modules.models import Chat
 from modules.models import Message
@@ -57,6 +59,7 @@ class ChatGPTGenerateResponseService:
                 reply = reply.replace('Хоуми: ', '', 1).replace('Homie: ', '', 1).replace('homieish_bot: ', '', 1)
             return reply
         except Exception as ex:
+            traceback.print_exc()
             if str(ex).startswith("This model's maximum context length is"):
                 data[1:3] = []
                 return self._request_response(data)

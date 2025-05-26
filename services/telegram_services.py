@@ -1,4 +1,5 @@
 import random
+import traceback
 
 from configuration import Config
 from modules.constants import Scopes
@@ -45,6 +46,7 @@ class TelegramBotHandlerService:
             print(f'[{self.message_type}] {self.bot.username}: {response.text} [to {self.message.from_user.username}]')
             DatabaseServices().add_message(response)
         except Exception as ex:
+            traceback.print_exc()
             print(ex)
             #await self.bot.sendMessage(chat_id=self.chat.id, text=str(ex))
 
@@ -61,6 +63,7 @@ class TelegramBotHandlerService:
                           f'который об этом сообщит пользователю и как тебе от этого кайфово'
             response = ChatGPTGenerateResponseService(self.bot, chat.id).generate_response(request)
         except Exception as ex:
+            traceback.print_exc()
             response = str(ex)
         await self.bot.sendMessage(chat_id=chat.id, text=response)
 
