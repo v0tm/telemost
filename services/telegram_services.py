@@ -27,7 +27,8 @@ class TelegramBotHandlerService:
         Service for handling incoming messages.
         """
         try:
-            print(f'[message_id {self.message.id}] [chat_id {self.chat.id}] [{self.message_type}] {self.message.from_user.username}: {self.message.text} [topic {self.message.message_thread_id}]')
+            topic = self.message.message_thread_id if self.message.is_topic_message else None
+            print(f'[message_id {self.message.id}] [chat_id {self.chat.id}] [{self.message_type}] {self.message.from_user.username}: {self.message.text} [topic {topic}]')
             DatabaseServices().add_message(self.message)
             chance = random.random()
             if self.text is None:
@@ -38,7 +39,6 @@ class TelegramBotHandlerService:
             if 'group' in str(self.message_type) and chance > 0.05 and not mentioned:
                 return
             await self.chat.send_chat_action("typing")
-            topic = self.message.message_thread_id if self.message.is_topic_message else None
             text = ChatGPTGenerateResponseService(self.bot, self.chat.id).generate_response_with_narrative(topic)
             try:
                 response = await self.update.get_bot().sendMessage(chat_id=self.chat.id, text=text, message_thread_id=topic,
