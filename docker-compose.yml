@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: simple-python-app
+    # тома, если нужен live-reload:
+    # volumes:
+    #   - .:/app
+    volumes:
+      - homie_data:/app/db
+    restart: unless-stopped
+
+
+volumes:
+  homie_data:
