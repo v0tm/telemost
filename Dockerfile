@@ -1,6 +1,8 @@
 # Базовый образ с Python 3
 FROM python:3.11-slim
 
+ENV PYTHONUNBUFFERED=1
+
 # Рабочая директория внутри контейнера
 WORKDIR /app
 
@@ -14,4 +16,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Команда запуска при старте контейнера
-CMD ["python", "main.py"]
+CMD ["python", "-u", "main.py"]
